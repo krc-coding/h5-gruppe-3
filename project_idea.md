@@ -17,11 +17,11 @@ Frontend :
 
 
 Super marked data:
-tidsstempel (tidskunkt for hvornår fake data blev lavet)
-personer der er kommet
-varer solgt
-værdi af varer solgt
-mængde af specifikke katagorier (silk, grønt, kød, mælke produkter)
-pakker hentet
-pakker modtaget
+* tidsstempel (tidskunkt for hvornår fake data blev lavet)
+* personer der er kommet
+* varer solgt
+* værdi af varer solgt
+* mængde af specifikke katagorier (silk, grønt, kød, mælke produkter)
+* pakker hentet
+* pakker modtaget
 
