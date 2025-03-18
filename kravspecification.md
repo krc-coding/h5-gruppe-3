@@ -10,6 +10,23 @@ To handle the data we plan to create a server.
  - The backend will store the data received through our message broker, in a MariaDB sql server.
  - To ensure that updating the servers doesn't break anything, we also want to setup extenxive testing of all endpoints to ensure that the code is working.
 
-For the frontend, we intend to use <missing-language>.
+For the frontend, we intend to use blade.php.
  - The site will have to primary views, the first is to get an overview of devices, and the second is to view the data collected.
  - The data view will include options for filtering and searching the data.
+
+IoT:
+ - Arduino 
+ - c++
+
+Message broker:
+ - RabbitMQ
+
+Backend:
+ - php
+ - Laravel
+
+Database:
+ - MariaDB
+
+Frontend:
+ - Laravel blade templates
