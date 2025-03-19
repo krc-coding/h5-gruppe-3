@@ -80,20 +80,22 @@ A retail store wants to optimize its operations by understanding customer behavi
     - How many products have been sold
     - What types of products have been sold
     - The total value of sold products
-    - How many packages have been picked up and delivered to the store
+    - How many packages have been picked up and delivered to the store if the store has a package delivery spot
 
     The purpose is to collect data from stores and display it in an intuitive way where a user can filter and search the data.
 
-2. **Domain Model**
-    - Description of the main objects in the system and their relationships.
-    - Often illustrated with a UML diagram, where each class/entity is briefly presented (name, attributes, relationships).
-    - This also applies if you use many systems to build the system.
-
-    **Domain Model:**
+2. **Domain Model:**
     - IoT devices: Collect data continuously and send it every hour.
     - Server: Runs an nginx web server that directs traffic to a backend written in PHP using the Laravel framework.
     - Backend: Receives data through a message broker and stores it in a MariaDB SQL server.
     - Frontend: Uses Laravel blade templates to display data.
+    ```mermaid
+    graph TD;
+    A[IoT]---B[Message broker]
+    B-->C[Backend]
+    C-->D[Database]
+    E[Frontend]-->C
+    ```
 
 3. **Functional Requirements:**
     - IoT devices must display an ID on a display, which can be used to filter the data.
@@ -118,3 +120,4 @@ A retail store wants to optimize its operations by understanding customer behavi
     - Supportability: The code must be well-documented and easy to maintain.
 
 5. **Limitations:**
+    - Data predictions
