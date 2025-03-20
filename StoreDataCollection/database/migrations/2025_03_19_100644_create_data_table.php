@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('data', function (Blueprint $table) {
             $table->id();
-            $table->integer('peoples');
+            $table->integer('people');
             $table->integer('products_pr_person');
             $table->float('total_value');
             $table->json('product_categories');
