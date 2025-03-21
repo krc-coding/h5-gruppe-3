@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('data', function (Blueprint $table) {
             $table->id();
-            $table->integer('peoples');
+            $table->integer('people');
             $table->integer('products_pr_person');
             $table->float('total_value');
             $table->json('product_categories');
             $table->integer('packages_received')->nullable();
             $table->integer('packages_delivered')->nullable();
-            $table->unsignedBigInteger('devices_id');
+            $table->unsignedBigInteger('device_id');
             $table->timestamp('data_recorded_at');
-            $table->foreign('devices_id')->references('id')->on('devices');
+            $table->foreign('device_id')->references('id')->on('devices');
         });
     }
 
