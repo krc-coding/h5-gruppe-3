@@ -42,9 +42,6 @@ class DataController extends Controller
         ]);
 
         $device = Devices::where('uuid', $request->device_uuid)->first();
-
-        Log::debug('total value', [$request->total_value]);
-
         $data = Data::create([
             'people' => $request->people,
             'products_pr_person' => $request->products_pr_person,
