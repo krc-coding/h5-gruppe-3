@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Data extends Model
 {
+    public $timestamps = false;
     protected $fillable = [
         'people',
         'products_pr_person',
-        'total_values',
+        'total_value',
         'product_categories',
         'packages_received',
         'packages_delivered',
