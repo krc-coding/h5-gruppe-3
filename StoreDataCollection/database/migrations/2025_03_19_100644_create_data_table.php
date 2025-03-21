@@ -19,9 +19,9 @@ return new class extends Migration
             $table->json('product_categories');
             $table->integer('packages_received')->nullable();
             $table->integer('packages_delivered')->nullable();
-            $table->unsignedBigInteger('devices_id');
+            $table->unsignedBigInteger('device_id');
             $table->timestamp('data_recorded_at');
-            $table->foreign('devices_id')->references('id')->on('devices');
+            $table->foreign('device_id')->references('id')->on('devices');
         });
     }
 
