@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Devices extends Model
 {
+    public $timestamps = false;
     protected $fillable = [
         'uuid',
     ];
