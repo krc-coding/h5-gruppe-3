@@ -18,34 +18,34 @@
     <div class="mt-4">
         <h2>Search Results</h2>
         @if($deviceData->isEmpty())
-            <p>No data found.</p>
+        <p>No data found.</p>
         @else
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>people</th>
-                        <th>products pr person</th>
-                        <th>total value</th>
-                        <th>product categori</th>
-                        <th>packages received</th>
-                        <th>packages delivered</th>
-                        <th>data recorded at</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($deviceData as $device)
-                    <tr>
-                        <td>{{ $device->peoples }}</td>
-                        <td>{{ $device->products_pr_person }}</td>
-                        <td>{{ $device->total_values }}</td>
-                        <td>{{ $device->product_categories }}</td>
-                        <td>{{ $device->packages_received }}</td>
-                        <td>{{ $device->packages_delivered }}</td>
-                        <td>{{ $device->data_recorded_at }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>people</th>
+                    <th>products pr person</th>
+                    <th>total value</th>
+                    <th>product categori</th>
+                    <th>packages received</th>
+                    <th>packages delivered</th>
+                    <th>data recorded at</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($deviceData as $device)
+                <tr>
+                    <td>{{ $device->peoples }}</td>
+                    <td>{{ $device->products_pr_person }}</td>
+                    <td>{{ $device->total_values }}</td>
+                    <td>{{ $device->product_categories }}</td>
+                    <td>{{ $device->packages_received }}</td>
+                    <td>{{ $device->packages_delivered }}</td>
+                    <td>{{ $device->data_recorded_at }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
         @endif
     </div>
     @endif
