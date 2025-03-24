@@ -1,0 +1,9 @@
+name: deploy-on-hetzner 
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  deploy-on-hetzner:
+    runs-on: ubuntu-latest
+    steps:
