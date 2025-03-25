@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\GroupController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\StatusController;
@@ -18,4 +19,12 @@ Route::prefix('/device')->group(function () {
     Route::get('/{device}', [DeviceController::class, 'getDevice']);
     Route::get('/group/{group}', [DeviceController::class, 'getByGroup']);
     Route::delete('/{device}', [DeviceController::class, 'delete']);
+});
+Route::prefix('/group')->group(function () {
+    Route::post('/create', [GroupController::class, 'create']);
+    Route::get('/', [GroupController::class, 'getAllGroups']);
+    Route::get('/{group}', [GroupController::class, 'getByGroupId']);
+    Route::get('/user/{user}', [GroupController::class, 'getByUserId']);
+    Route::put('/{group}', [GroupController::class, 'update']);
+    Route::delete('/{group}', [GroupController::class, 'delete']);
 });
