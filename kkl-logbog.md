@@ -7,4 +7,4 @@
  - made crud to device controller
 
 24-3-25
- - 
+ - made crud to user controller
