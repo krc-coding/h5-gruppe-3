@@ -17,3 +17,6 @@ jobs:
           script: |
             cd h5-gruppe-3
             git pull
+            cd StoreDataCollection
+            composer install
+            php artisan migrate
