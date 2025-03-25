@@ -11,7 +11,7 @@ jobs:
           uses: appleboy/ssh-action@v1
           with:
             host: krc-coding.dk
-            username: www-data
+            username: www-user
             key: ${{ secrets.SSH_PRIVATE_KEY }}
             port: 22
             script: |
