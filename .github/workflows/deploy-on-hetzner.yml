@@ -1,9 +1,19 @@
 name: deploy-on-hetzner 
-on: 
-  push:
-    branches:
-      - main
+on: push
 jobs:
-  deploy-on-hetzner:
-    runs-on: ubuntu-latest
-    steps:
+  deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v3
+
+        - name: multiple command
+          uses: appleboy/ssh-action@v1
+          with:
+            host: krc-coding.dk
+            username: www-data
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            port: 22
+            script: |
+              whoami
+              ls -al
