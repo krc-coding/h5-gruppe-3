@@ -4,7 +4,11 @@
 
 21-3-25
  - Updated migrations spelling mistake
- - made crud to device controller
+ - Made crud to device controller
 
 24-3-25
- - made crud to user controller
+ - Made crud to user controller
+
+ 25-3-25
+  - Finished making user controller
+  - Made access token migrations
