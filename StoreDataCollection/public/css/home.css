@@ -57,11 +57,6 @@ input[type="text"] {
     transition: background 0.3s ease-in-out, transform 0.2s;
 }
 
-.btn-primary:hover {
-    background: #0056b3;
-    transform: scale(1.05);
-}
-
 /* 🌟 Results Section */
 .table-container {
     margin-top: 20px;
