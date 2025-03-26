@@ -101,9 +101,9 @@
                             .product_categories);
 
                         table += `<tr>
-                            <td>${device.peoples}</td>
+                            <td>${device.people}</td>
                             <td>${device.products_pr_person}</td>
-                            <td>${device.total_values}</td>`;
+                            <td>${device.total_value}</td>`;
 
                         categoryColumns.forEach(category => {
                             table +=
