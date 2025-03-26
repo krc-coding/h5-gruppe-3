@@ -21,11 +21,13 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required placeholder="Enter your password">
 
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary" id="loginBtnSubmit">Login</button>
+                <button type="submit" class="btn btn-primary" id="signUpBtnSubmit">Sign up</button>
             </form>
         </div>
     </div>
 
+    <!-- Main content -->
     <div class="container center-container">
         <button id="loginBtn" class="login-btn">Login</button>
 
@@ -46,6 +48,7 @@
     </div>
 
     <script>
+        //search function and creation of data tables
         document.getElementById('searchForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -124,8 +127,58 @@
                 });
         });
 
+        // Login/Sign up form
+        document.addEventListener("DOMContentLoaded", function() {
+            let loginForm = document.getElementById("loginForm");
 
+            document.getElementById("loginBtnSubmit").addEventListener("click", function(event) {
+                event.preventDefault();
+                if (loginForm.checkValidity()) {
+                    handleFormSubmit("/api/login"); //need the accual api
+                } else {
+                    loginForm.reportValidity();
+                }
+            });
 
+            document.getElementById("signUpBtnSubmit").addEventListener("click", function(event) {
+                event.preventDefault();
+                if (loginForm.checkValidity()) {
+                    handleFormSubmit("/api/signup"); //need the accual api
+                } else {
+                    loginForm.reportValidity();
+                }
+            });
+
+            function handleFormSubmit(apiUrl) {
+                let email = document.getElementById("email").value;
+                let password = document.getElementById("password").value;
+
+                fetch(apiUrl, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            email,
+                            password
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        if (data.success) {
+                            document.getElementById("loginModal").style.display =
+                                "none";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("An error occurred. Please try again.");
+                    });
+            }
+        });
+
+        // open/close login modal
         document.addEventListener("DOMContentLoaded", function() {
             let modal = document.getElementById("loginModal");
             let btn = document.getElementById("loginBtn");
