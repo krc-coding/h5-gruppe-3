@@ -47,6 +47,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function accessTokens(): HasMany
+    {
+        return $this->hasMany(AccessToken::class);
+    }
+
     public function groups(): HasMany
     {
         return $this->hasMany(Groups::class);
