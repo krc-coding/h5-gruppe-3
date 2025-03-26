@@ -1,0 +1,24 @@
+name: deploy-on-hetzner
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: multiple command
+        uses: appleboy/ssh-action@v1
+        with:
+          host: krc-coding.dk
+          username: www-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd h5-gruppe-3
+            git pull
+            cd StoreDataCollection
+            composer install
+            php artisan migrate
