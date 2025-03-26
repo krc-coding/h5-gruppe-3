@@ -22,9 +22,11 @@ Route::prefix('/device')->group(function () {
 });
 Route::prefix('/group')->group(function () {
     Route::post('/create', [GroupController::class, 'create']);
+    Route::post('{group}/add', [GroupController::class, 'addDeviceToGroup']);
     Route::get('/', [GroupController::class, 'getAllGroups']);
     Route::get('/{group}', [GroupController::class, 'getByGroupId']);
     Route::get('/user/{user}', [GroupController::class, 'getByUserId']);
     Route::put('/{group}', [GroupController::class, 'update']);
+    Route::patch('{group}/remove/{device}', [GroupController::class, 'removeDeviceFromGroup']);
     Route::delete('/{group}', [GroupController::class, 'delete']);
 });

@@ -42,6 +42,17 @@ class GroupController extends Controller
         return new GroupResource($group);
     }
 
+    public function addDeviceToGroup(Request $request, Groups $group)
+    {
+        $validated = $request->validate([
+            'devicesIds' => 'required|array',
+            'devicesIds.*' => 'required|exists:devices,id',
+        ]);
+
+        $group->devices()->attach($validated['devicesIds']);
+        return response()->json(['message' => 'Devices attached successfully']);
+    }
+
     public function update(Request $request, Groups $group)
     {
         $request->validate([
@@ -52,6 +63,12 @@ class GroupController extends Controller
         $group->save();
 
         return new GroupResource($group);
+    }
+
+    public function removeDeviceFromGroup(Groups $group, Devices $device)
+    {
+        $group->devices()->detach($device);
+        return response()->json(['message' => 'Devices detached succesfully']);
     }
 
     public function delete(Groups $group)
