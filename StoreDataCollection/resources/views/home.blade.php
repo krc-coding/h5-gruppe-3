@@ -6,13 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-
-    
 </head>
 
 <body>
+    <div id="loginModal" class="modal" style="display: none">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
 
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+    
     <div class="container center-container">
+        <button id="loginBtn" class="login-btn">Login</button>
+        
         <h1>Search Device Data</h1>
 
         <!-- Search Form -->
@@ -79,6 +94,29 @@
                     console.error('Error fetching data:', error);
                     document.getElementById('results').innerHTML = '<p class="text-danger">Error fetching data.</p>';
                 });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let modal = document.getElementById("loginModal");
+            let btn = document.getElementById("loginBtn");
+            let closeBtn = document.querySelector(".close");
+            
+            btn.onclick = function() {
+                modal.style.display = "flex"; // Show modal
+                document.body.classList.add("modal-open"); 
+            }
+            
+            closeBtn.onclick = function() {
+                modal.style.display = "none"; // Hide modal
+                document.body.classList.remove("modal-open");
+            }
+            
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none"; 
+                    document.body.classList.remove("modal-open");
+                }
+            }
         });
     </script>
 
