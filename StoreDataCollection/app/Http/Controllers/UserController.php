@@ -84,6 +84,12 @@ class UserController extends Controller
         return UserController::createToken($user);
     }
 
+    public function logout(User $user)
+    {
+        $tokens = $user->accessTokens()->delete();
+        return response()->json([], 204);
+    }
+
     public function delete(User $user)
     {
         $user->delete();

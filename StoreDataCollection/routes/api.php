@@ -8,6 +8,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 
 Route::post('/login', [UserController::class, 'login']);
+Route::delete('/logout/{user}', [UserController::class, 'logout']);
 
 Route::prefix('/data')->group(function () {
     Route::post('/create', [DataController::class, 'createData']);
