@@ -20,6 +20,7 @@ Route::prefix('/data')->group(function () {
 Route::prefix('/device')->group(function () {
     Route::post('/create', [DeviceController::class, 'createDevice']);
     Route::get('/', [DeviceController::class, 'getAllDevices']);
+    Route::get('/exits', [DeviceController::class, 'getDeviceByUuid']);
     Route::get('/{device}', [DeviceController::class, 'getDevice']);
     Route::get('/group/{group}', [DeviceController::class, 'getByGroup']);
     Route::delete('/{device}', [DeviceController::class, 'delete']);

@@ -6,6 +6,7 @@ use App\Http\Resources\DeviceResource;
 use App\Models\Devices;
 use App\Models\Groups;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DeviceController extends Controller
