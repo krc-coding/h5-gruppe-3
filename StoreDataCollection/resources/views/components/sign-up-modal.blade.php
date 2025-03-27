@@ -84,8 +84,9 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        if (data.data.token) {
-                            localStorage.setItem("authToken", data.data.token);
+                        if (data.token) {
+                            console.log(data.token)
+                            localStorage.setItem("authToken", data.token);
 
                             signUpModal.style.display = "none";
                             document.body.classList.remove("modal-open");
