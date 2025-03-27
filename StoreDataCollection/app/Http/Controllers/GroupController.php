@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DeviceResource;
 use App\Http\Resources\GroupResource;
 use App\Models\Devices;
 use App\Models\Groups;
@@ -11,6 +12,24 @@ use Illuminate\Support\Str;
 
 class GroupController extends Controller
 {
+    public function search(Request $request)
+    {
+        $request->validate([
+            'uuid' => 'required|string'
+        ]);
+        $group = Groups::where('uuid', $request->uuid)->first();
+        if ($group) {
+            return new GroupResource($group);
+        }
+
+        $device = Devices::where('uuid', $request->uuid)->first();
+        if ($device) {
+            return new DeviceResource($device);
+        }
+
+        return response()->json(['message' => 'No devices or group found'], 404);
+    }
+
     public function getByUserId(User $user)
     {
         return $user->groups()->get()->mapInto(GroupResource::class);
