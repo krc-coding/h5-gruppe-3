@@ -42,6 +42,6 @@ Route::prefix('/group')->group(function () {
     Route::patch('{group}/remove/{device}', [GroupController::class, 'removeDeviceFromGroup']);
     Route::delete('/{group}', [GroupController::class, 'delete']);
 });
-Route::prefix('search')->group(function () {
+Route::prefix('/search')->group(function () {
     Route::get('/', [GroupController::class, 'search']);
 });
