@@ -200,6 +200,37 @@
 					"response": []
 				},
 				{
+					"name": "Check if device exits",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/device/exits?uuid={{device_uuid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"device",
+								"exits"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "{{device_uuid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get device by group",
 					"request": {
 						"method": "GET",
@@ -377,7 +408,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"kasper\", \r\n    \"password\": \"Merc1234!\",\r\n    \"password_confirmation\": \"Merc1234!\"\r\n}",
+							"raw": "{\r\n    \"username\": \"test@gmail.com\", \r\n    \"password\": \"Merc1234!\",\r\n    \"password_confirmation\": \"Merc1234!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -392,6 +423,31 @@
 							"path": [
 								"api",
 								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/logout/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"logout",
 								"{{user_id}}"
 							]
 						}
@@ -660,6 +716,65 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search by device",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/search?uuid={{device_uuid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "{{device_uuid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search by group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/search?uuid={{group_uuid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "{{group_uuid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -717,6 +832,11 @@
 		},
 		{
 			"key": "group_id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "group_uuid",
 			"value": "",
 			"type": "default"
 		}

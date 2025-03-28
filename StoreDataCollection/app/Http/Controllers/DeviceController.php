@@ -6,10 +6,26 @@ use App\Http\Resources\DeviceResource;
 use App\Models\Devices;
 use App\Models\Groups;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DeviceController extends Controller
 {
+    public function getDeviceByUuid(Request $request)
+    {
+        $request->validate([
+            'uuid' => 'required|string'
+        ]);
+
+        $device = Devices::where('uuid', $request->uuid)->first();
+
+        if (!$device) {
+            return response()->json(['message' => 'Device not found'], 404);
+        }
+
+        return new DeviceResource($device);
+    }
+
     public function getDevice(Devices $device)
     {
         return new DeviceResource($device);
