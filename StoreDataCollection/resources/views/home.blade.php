@@ -57,40 +57,36 @@
 
                     let allCategories = new Set();
                     data.forEach(device => {
-                        let categories = JSON.parse(device
-                            .product_categories);
+                        let categories = JSON.parse(device.product_categories);
                         Object.keys(categories).forEach(category => allCategories.add(category));
                     });
 
                     let categoryColumns = Array.from(allCategories);
+                    let table = `<table class="table" id="dataTable">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">People <span></span></th>
+                        <th onclick="sortTable(1)">Products per Person <span></span></th>
+                        <th onclick="sortTable(2)">Total Value <span></span></th>`;
 
-                    let table = `<table class="table">
-                        <thead>
-                        <tr>
-                        <th>People</th>
-                        <th>Products per Person</th>
-                        <th>Total Value</th>`;
-
-                    categoryColumns.forEach(category => {
-                        table += `<th>${category}</th>`;
+                    categoryColumns.forEach((category, index) => {
+                        table += `<th onclick="sortTable(${index + 3})">${category} <span></span></th>`;
                     });
 
                     table += `
-                        <th>Packages Received</th>
-                        <th>Packages Delivered</th>
-                        <th>Data Recorded At</th>
-                        </tr>
-                        </thead>
-                        <tbody>`;
+                        <th onclick="sortTable(${categoryColumns.length + 3})">Packages Received <span></span></th>
+                        <th onclick="sortTable(${categoryColumns.length + 4})">Packages Delivered <span></span></th>
+                        <th onclick="sortTable(${categoryColumns.length + 5})">Data Recorded At <span>▼</span></th>
+                    </tr>
+                </thead>
+                <tbody>`;
 
                     data.forEach(device => {
-                        let categories = JSON.parse(device
-                            .product_categories);
-
+                        let categories = JSON.parse(device.product_categories);
                         table += `<tr>
-                            <td>${device.people}</td>
-                            <td>${device.products_pr_person}</td>
-                            <td>${device.total_value}</td>`;
+                    <td>${device.people}</td>
+                    <td>${device.products_pr_person}</td>
+                    <td>${device.total_value}</td>`;
 
                         categoryColumns.forEach(category => {
                             table +=
@@ -98,10 +94,10 @@
                         });
 
                         table += `
-                            <td>${device.packages_received}</td>
-                            <td>${device.packages_delivered}</td>
-                            <td>${device.data_recorded_at}</td>
-                            </tr>`;
+                    <td>${device.packages_received}</td>
+                    <td>${device.packages_delivered}</td>
+                    <td>${device.data_recorded_at}</td>
+                </tr>`;
                     });
 
                     table += `</tbody></table>`;
@@ -113,6 +109,46 @@
                         '<p class="text-danger">Error fetching data.</p>';
                 });
         });
+
+        // Sorting function
+        function sortTable(columnIndex) {
+            let table = document.getElementById("dataTable");
+            let tbody = table.querySelector("tbody");
+            let rows = Array.from(tbody.rows);
+            let headers = table.querySelectorAll("th span");
+
+            let isAscending = table.dataset.sortColumn == columnIndex && table.dataset.order == "asc";
+            table.dataset.sortColumn = columnIndex;
+            table.dataset.order = isAscending ? "desc" : "asc";
+
+            rows.sort((rowA, rowB) => {
+                let cellA = rowA.cells[columnIndex].innerText.trim();
+                let cellB = rowB.cells[columnIndex].innerText.trim();
+
+                // Try parsing as a number
+                let numA = parseFloat(cellA.replace(/,/g, ""));
+                let numB = parseFloat(cellB.replace(/,/g, ""));
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return isAscending ? numA - numB : numB - numA;
+                }
+
+                // Try parsing as date
+                let dateA = new Date(cellA);
+                let dateB = new Date(cellB);
+                if (!isNaN(dateA) && !isNaN(dateB)) {
+                    return isAscending ? dateA - dateB : dateB - dateA;
+                }
+
+                // Default: Sort as string
+                return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
+
+            // Update sorting arrow indicators
+            headers.forEach(span => (span.innerHTML = ""));
+            headers[columnIndex].innerHTML = isAscending ? " ▲" : " ▼";
+        }
     </script>
 
 </body>
