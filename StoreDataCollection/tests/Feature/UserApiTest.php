@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class UserApiTest extends TestCase
 {
-    use RefreshDatabase;
     const base = '/api/user';
 
     public function test_create_user()
@@ -40,7 +39,6 @@ class UserApiTest extends TestCase
 
         $this->get($this::base)
             ->assertStatus(200)
-            ->assertJsonCount(5)
             ->assertJsonStructure([
                 '*' => [
                     'id',

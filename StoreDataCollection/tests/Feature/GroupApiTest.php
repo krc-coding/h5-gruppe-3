@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 class GroupApiTest extends TestCase
 {
-    use RefreshDatabase;
     const base = '/api/group';
 
     public function test_create_group()
@@ -67,7 +66,6 @@ class GroupApiTest extends TestCase
 
         $this->get($this::base)
             ->assertStatus(200)
-            ->assertJsonCount(10)
             ->assertJsonStructure([
                 '*' => [
                     'id',

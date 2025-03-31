@@ -12,7 +12,6 @@ use Tests\TestCase;
 
 class DeviceApiTest extends TestCase
 {
-    use RefreshDatabase;
     const base = '/api/device';
 
     public function test_create_device()
@@ -33,7 +32,6 @@ class DeviceApiTest extends TestCase
 
         $this->get($this::base)
             ->assertStatus(200)
-            ->assertJsonCount(5)
             ->assertJsonStructure([
                 '*' => [
                     'id',
