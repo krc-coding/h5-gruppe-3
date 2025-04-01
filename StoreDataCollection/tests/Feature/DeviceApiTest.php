@@ -77,14 +77,17 @@ class DeviceApiTest extends TestCase
             ]);
     }
 
-    public function test_if_device_exits() // isn't on the brance...
+    public function test_if_device_exits()
     {
         $device = Devices::factory()->create();
         $this->get($this::base . "/exits?uuid={$device->uuid}")
-            ->assertStatus(404);
-        // ->assertJsonStructure([
-
-        // ]);
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => [
+                    'id',
+                    'uuid'
+                ]
+            ]);
     }
 
     public function test_delete_device()

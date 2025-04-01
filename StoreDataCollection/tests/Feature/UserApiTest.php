@@ -67,9 +67,10 @@ class UserApiTest extends TestCase
 
     public function test_update_user()
     {
-        $user = User::factory()->create();
+        $newUserValues = User::factory()->make();
+        $user = User::all()->random();
         $response = $this->putJson($this::base . "/{$user->id}", [
-            'username' => 'this is an updated username, :: test',
+            'username' => $newUserValues->username,
             'password' => 'Password1!',
             'password_confirmation' => 'Password1!',
         ]);

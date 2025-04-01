@@ -182,4 +182,38 @@ class GroupApiTest extends TestCase
 
         $this->assertDatabaseMissing('groups', ['id' => $group->id]);
     }
+
+    public function test_search_using_device_uuid()
+    {
+        $device = Devices::all()->random();
+
+        $response = $this->get('/api/search?uuid=' . $device->uuid);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'uuid'
+                ]
+            ]);
+    }
+
+    public function test_search_using_group_uuid()
+    {
+        $group = Groups::all()->random();
+
+        $response = $this->get('/api/search?uuid=' . $group->uuid);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'uuid',
+                    'name',
+                    'user_id',
+                    'created_at',
+                    'updated_at'
+                ]
+            ]);
+    }
 }
