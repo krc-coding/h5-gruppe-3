@@ -109,7 +109,7 @@
                 return;
             }
 
-            fetch(`/api/groups/${groupId}/devices`, {
+            fetch(`/api/group/${groupId}/add?devicesIds=${deviceId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -123,7 +123,7 @@
         }
 
         function removeDevice(groupId, deviceId) {
-            fetch(`/api/groups/${groupId}/devices/${deviceId}`, {
+            fetch(`/api/group/${groupId}/remove/${deviceId}`, {
                     method: "DELETE"
                 })
                 .then(() => fetchGroups()) // Refresh list
