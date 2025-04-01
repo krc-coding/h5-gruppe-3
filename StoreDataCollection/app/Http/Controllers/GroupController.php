@@ -27,7 +27,7 @@ class GroupController extends Controller
             return new DeviceResource($device);
         }
 
-        return response()->json(['message' => 'No devices or group found'], 404);
+        return response()->json(['message' => 'No device found'], 404);
     }
 
     public function getByUserId(User $user)
