@@ -40,7 +40,7 @@
             event.preventDefault();
 
             let uuid = document.getElementById('uuid').value.trim();
-            let apiUrl = uuid ? `/api/data/device/${uuid}` : `/api/data`;
+            let apiUrl = uuid ? `/api/search?uuid=${uuid}` : `/api/data`;
 
             fetch(apiUrl)
                 .then(response => response.json())

@@ -183,3 +183,8 @@ input[type="password"] {
 .modal-open {
     pointer-events: none;
 }
+
+.logged-in {
+    background-color: #28a745;
+    color: white;
+}
