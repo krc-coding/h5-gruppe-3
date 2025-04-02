@@ -88,13 +88,14 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        if (data.data && data.data.token) {
-                            localStorage.setItem("authToken", data.data.token);
-                            //localStorage.setItem("authToken", data.data.);
+                        if (data && data.token) {
+                            localStorage.setItem("authToken", data.token);
+                            localStorage.setItem("userID", data.user.id);
+                            localStorage.setItem("userName", data.user.username);
                             modal.style.display = "none";
-                            //window.location.reload();
+                            window.location.reload();
                         } else {
-                            alert(data.message || "Login failed.");
+                            alert(data.error_message || "Login failed.");
                         }
                     })
                     .catch(error => {
