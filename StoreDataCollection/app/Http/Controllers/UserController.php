@@ -49,7 +49,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['user' => $user, 'token' => UserController::createToken($user)->token], 201);
+        return response()->json(['user' => new UserResource($user), 'token' => UserController::createToken($user)->token], 201);
     }
 
     public function putUser(Request $request, User $user)
@@ -81,7 +81,7 @@ class UserController extends Controller
         $tokens = $user->accessTokens();
         $tokens->delete();
 
-        return UserController::createToken($user);
+        return response()->json(['user' => new UserResource($user), 'token' => UserController::createToken($user)->token], 201);
     }
 
     public function logout(User $user)
