@@ -552,7 +552,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"devicesIds\": [\r\n        {{device_id}}\r\n    ]\r\n}",
+							"raw": "{\r\n    \"devicesUuids\": [\r\n        \"{{device_uuid}}\"\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -662,7 +662,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/group/uuid",
+							"raw": "{{base_url}}/api/group/uuid?uuid={{group_uuid}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -670,6 +670,12 @@
 								"api",
 								"group",
 								"uuid"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "{{group_uuid}}"
+								}
 							]
 						}
 					},
