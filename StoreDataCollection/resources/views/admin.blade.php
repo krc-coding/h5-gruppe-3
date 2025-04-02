@@ -10,6 +10,13 @@
 
 <body>
     <div class="container">
+
+        <!-- Navigation Buttons -->
+        <div class="button-container">
+            <button onclick="goHome()" class="btn-nav">Data Search</button>
+            <button onclick="logout()" class="btn-nav logout">Logout</button>
+        </div>
+
         <h1>Manage Groups</h1>
 
         <!-- Create Group -->
@@ -171,6 +178,18 @@
                     console.error("Error adding device:", error);
                     alert("Failed to add device: " + error.message);
                 });
+        }
+
+        function goHome() {
+            window.location.href = "/";
+        }
+
+        function logout() {
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("userID");
+            localStorage.removeItem("userName");
+            alert("Logged out successfully!");
+            window.location.href = "/";
         }
     </script>
 </body>
