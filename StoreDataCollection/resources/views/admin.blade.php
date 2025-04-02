@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Group Management</title>
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <body>
@@ -60,9 +60,9 @@
                     <td>${group.name}</td>
                     <td id="devices-${group.id}">Loading...</td>
                     <td>
-                        <button onclick="deleteGroup('${group.id}')">Delete Group</button>
-                        <input type="text" id="device-${group.id}" placeholder="Device UUID">
-                        <button onclick="addDevice('${group.id}')">Add Device</button>
+                        <button onclick="deleteGroup('${group.id}')" class="btn-danger">Delete Group</button>
+                        <input type="text" id="device-${group.id}" placeholder="Device UUID" class="input-text">
+                        <button onclick="addDevice('${group.id}')" class="btn-primary">Add Device</button>
                     </td>
                     <td>${group.uuid}</td>
                 `;
@@ -87,13 +87,12 @@
 
                     deviceContainer.innerHTML = devices.map(device =>
                         `<span>${device.uuid} 
-                    <button onclick="removeDevice('${groupId}', '${device.id}')">❌</button>
+                    <button onclick="removeDevice('${groupId}', '${device.id}')" class="btn-warning">Remove Device</button>
                 </span>`
                     ).join("<br>");
                 })
                 .catch(error => console.error(`Error fetching devices for group ${groupId}:`, error));
         }
-
 
         function createGroup() {
             let groupName = document.getElementById("groupName").value.trim();
