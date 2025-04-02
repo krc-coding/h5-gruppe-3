@@ -142,7 +142,7 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        devicesIds: [deviceUUId]
+                        devicesUuids: [deviceUUId]
                     })
                 })
                 .then(response => {
