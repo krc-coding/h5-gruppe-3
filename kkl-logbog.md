@@ -14,4 +14,20 @@
  - Made access token migrations
 
 26-3-25
- - made group controller
+ - Made group controller
+
+27-3-25
+ - Made a search api
+ - Made an api for arduino
+
+28-3-25
+ - Made integration testing for api
+
+31-3-25
+ - Continues making integration test
+
+1-4-25
+ - Search returns data instead of devices or group
+
+2-4-25
+ - Got my thing merge and fixed the small errors coming from it
