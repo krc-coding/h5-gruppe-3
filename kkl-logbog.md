@@ -25,3 +25,9 @@
 
 31-3-25
  - Continues making integration test
+
+1-4-25
+ - Search returns data instead of devices or group
+
+2-4-25
+ - Got my thing merge and fixed the small errors coming from it
