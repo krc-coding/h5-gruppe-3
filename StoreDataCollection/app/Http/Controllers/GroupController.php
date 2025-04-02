@@ -74,12 +74,13 @@ class GroupController extends Controller
 
     public function addDeviceToGroup(Request $request, Groups $group)
     {
-        $validated = $request->validate([
-            'devicesIds' => 'required|array',
-            'devicesIds.*' => 'required|exists:devices,id',
+        $request->validate([
+            'devicesUuids' => 'required|array',
+            'devicesUuids.*' => 'required|exists:devices,uuid',
         ]);
 
-        $group->devices()->attach($validated['devicesIds']);
+        $devices = Devices::whereIn('uuid', $request->devicesUuids)->get();
+        $group->devices()->attach($devices);
         return response()->json(['message' => 'Devices attached successfully']);
     }
 
