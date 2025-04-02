@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DataResource;
 use App\Http\Resources\DeviceResource;
 use App\Http\Resources\GroupResource;
+use App\Models\Data;
 use App\Models\Devices;
 use App\Models\Groups;
 use App\Models\User;
@@ -19,12 +21,12 @@ class GroupController extends Controller
         ]);
         $group = Groups::where('uuid', $request->uuid)->first();
         if ($group) {
-            return new GroupResource($group);
+            return Data::whereIn('device_id', $group->devices()->pluck('id'))->get()->mapInto(DataResource::class);
         }
 
         $device = Devices::where('uuid', $request->uuid)->first();
         if ($device) {
-            return new DeviceResource($device);
+            return $device->data()->get()->mapInto(DataResource::class);
         }
 
         return response()->json(['message' => 'No device found'], 404);
@@ -38,6 +40,15 @@ class GroupController extends Controller
     public function getByGroupId(Groups $group)
     {
         return new GroupResource($group);
+    }
+
+    public function getByGroupUuid(Request $request)
+    {
+        $request->validate([
+            'uuid' => 'required|exists:groups,uuid',
+        ]);
+
+        return new GroupResource(Groups::where('uuid', $request->uuid)->first());
     }
 
     public function getAllGroups()

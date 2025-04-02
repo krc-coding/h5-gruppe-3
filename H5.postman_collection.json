@@ -21,13 +21,34 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"people\": 12,\r\n    \"products_pr_person\": 2,\r\n    \"total_value\": 2.5,\r\n    \"product_categories\": \"{\\\"demo\\\":0.2}\",\r\n    \"packages_received\": 12,\r\n    \"packages_delivered\": 4,\r\n    \"device_uuid\": {{device_uuid}}\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "people",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "products_pr_person",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "total_value",
+									"value": "2.5",
+									"type": "text"
+								},
+								{
+									"key": "product_categories",
+									"value": "{\"demo\":0.2}",
+									"type": "text"
+								},
+								{
+									"key": "device_uuid",
+									"value": "{{device_uuid}}",
+									"type": "text"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{base_url}}/api/data/create",
@@ -408,7 +429,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"test@gmail.com\", \r\n    \"password\": \"Merc1234!\",\r\n    \"password_confirmation\": \"Merc1234!\"\r\n}",
+							"raw": "{\r\n    \"username\": \"test\", \r\n    \"password\": \"Merc1234!\",\r\n    \"password_confirmation\": \"Merc1234!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -554,7 +575,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all",
+					"name": "Get all groups",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -624,6 +645,31 @@
 								"group",
 								"user",
 								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get groups by uuid",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/group/uuid",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"uuid"
 							]
 						}
 					},
@@ -754,7 +800,13 @@
 					"name": "Search by group",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/api/search?uuid={{group_uuid}}",
 							"host": [
