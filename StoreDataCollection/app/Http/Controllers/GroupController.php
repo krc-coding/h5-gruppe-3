@@ -40,6 +40,15 @@ class GroupController extends Controller
         return new GroupResource($group);
     }
 
+    public function getByGroupUuid(Request $request)
+    {
+        $request->validate([
+            'uuid' => 'required|exists:groups,uuid',
+        ]);
+
+        return new GroupResource(Groups::where('uuid', $request->uuid)->first());
+    }
+
     public function getAllGroups()
     {
         return Groups::all()->mapInto(GroupResource::class);
