@@ -26,8 +26,6 @@ class UserApiTest extends TestCase
                 'user' => [
                     'id',
                     'username',
-                    'created_at',
-                    'updated_at'
                 ],
                 'token'
             ]);
@@ -43,8 +41,6 @@ class UserApiTest extends TestCase
                 '*' => [
                     'id',
                     'username',
-                    'created_at',
-                    'updated_at'
                 ]
             ]);
     }
@@ -59,8 +55,6 @@ class UserApiTest extends TestCase
                 'data' => [
                     'id',
                     'username',
-                    'created_at',
-                    'updated_at'
                 ]
             ]);
     }
@@ -80,8 +74,6 @@ class UserApiTest extends TestCase
                 'data' => [
                     'id',
                     'username',
-                    'created_at',
-                    'updated_at'
                 ]
             ]);
     }

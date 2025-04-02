@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class GroupApiTest extends TestCase
@@ -38,13 +37,8 @@ class GroupApiTest extends TestCase
 
     public function test_add_many_device_to_group()
     {
-        $user = User::factory()->create();
         $devices = Devices::factory()->count(12)->create()->pluck('id')->toArray();
-        $group = Groups::create([ // no factory to groups...
-            'name' => 'hey',
-            'user_id' => $user->id,
-            'uuid' =>  Str::uuid(),
-        ]);
+        $group = Groups::factory()->create();
 
         $response = $this->post($this::base . "/{$group->id}/add", [
             'devicesIds' => $devices
@@ -55,15 +49,7 @@ class GroupApiTest extends TestCase
 
     public function test_get_all_groups()
     {
-        $user = User::factory()->create();
-        for ($i = 1; $i <= 10; $i++) {
-            Groups::create([ // no factory to groups...
-                'name' => 'hey',
-                'user_id' => $user->id,
-                'uuid' =>  Str::uuid(),
-            ]);
-        }
-
+        Groups::factory()->count(10)->create();
         $this->get($this::base)
             ->assertStatus(200)
             ->assertJsonStructure([
@@ -80,12 +66,7 @@ class GroupApiTest extends TestCase
 
     public function test_get_group_by_group_id()
     {
-        $user = User::factory()->create();
-        $group = Groups::create([ // no factory to groups...
-            'name' => 'hey',
-            'user_id' => $user->id,
-            'uuid' =>  Str::uuid(),
-        ]);
+        $group = Groups::factory()->create();
 
         $this->get($this::base . "/{$group->id}")
             ->assertStatus(200)
@@ -104,13 +85,9 @@ class GroupApiTest extends TestCase
     public function test_get_groups_by_user_id()
     {
         $user = User::factory()->create();
-        for ($i = 1; $i <= 10; $i++) {
-            Groups::create([ // no factory to groups...
-                'name' => 'hey',
-                'user_id' => $user->id,
-                'uuid' =>  Str::uuid(),
-            ]);
-        }
+        Groups::factory()->count(10)->create([
+            'user_id' => $user->id
+        ]);
 
         $this->get($this::base . "/user/{$user->id}")
             ->assertStatus(200)
@@ -129,12 +106,7 @@ class GroupApiTest extends TestCase
 
     public function test_update_group()
     {
-        $user = User::factory()->create();
-        $group = Groups::create([ // no factory to groups...
-            'name' => 'hey',
-            'user_id' => $user->id,
-            'uuid' =>  Str::uuid(),
-        ]);
+        $group = Groups::factory()->create();
 
         $response = $this->putJson($this::base . "/{$group->id}", [
             'name' => 'updated by intagration!'
@@ -155,13 +127,8 @@ class GroupApiTest extends TestCase
 
     public function test_remove_device_from_group()
     {
-        $user = User::factory()->create();
         $device = Devices::factory()->create();
-        $group = Groups::create([ // no factory to groups...
-            'name' => 'hey',
-            'user_id' => $user->id,
-            'uuid' =>  Str::uuid(),
-        ]);
+        $group = Groups::factory()->create();
         $group->devices()->attach($device);
 
         $this->patch($this::base . "/{$group->id}/remove/{$device->id}")
@@ -170,12 +137,7 @@ class GroupApiTest extends TestCase
 
     public function test_delete_group()
     {
-        $user = User::factory()->create();
-        $group = Groups::create([ // no factory to groups...
-            'name' => 'hey',
-            'user_id' => $user->id,
-            'uuid' =>  Str::uuid(),
-        ]);
+        $group = Groups::factory()->create();
 
         $this->delete($this::base . "/{$group->id}")
             ->assertStatus(204);
@@ -191,9 +153,16 @@ class GroupApiTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'data' => [
+                '*' => [
                     'id',
-                    'uuid'
+                    'people',
+                    'products_pr_person',
+                    'total_value',
+                    'product_categories',
+                    'packages_received',
+                    'packages_delivered',
+                    'device_id',
+                    'data_recorded_at'
                 ]
             ]);
     }
@@ -206,13 +175,16 @@ class GroupApiTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'data' => [
+                '*' => [
                     'id',
-                    'uuid',
-                    'name',
-                    'user_id',
-                    'created_at',
-                    'updated_at'
+                    'people',
+                    'products_pr_person',
+                    'total_value',
+                    'product_categories',
+                    'packages_received',
+                    'packages_delivered',
+                    'device_id',
+                    'data_recorded_at'
                 ]
             ]);
     }
