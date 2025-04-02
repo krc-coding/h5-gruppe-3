@@ -24,6 +24,6 @@ class Devices extends Model
 
     public function data(): HasMany
     {
-        return $this->hasMany(Data::class);
+        return $this->hasMany(Data::class, 'device_id');
     }
 }
