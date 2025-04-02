@@ -92,7 +92,7 @@
                             document.body.classList.remove("modal-open");
                             window.location.reload();
                         } else {
-                            alert(data.error_message || "Login failed.");
+                            alert(data.message || "Login failed.");
                         }
                     })
                     .catch(error => {

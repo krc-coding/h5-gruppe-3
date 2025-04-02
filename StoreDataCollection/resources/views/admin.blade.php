@@ -26,6 +26,7 @@
                     <th>Group Name</th>
                     <th>Devices</th>
                     <th>Actions</th>
+                    <th>Group UUID</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -38,35 +39,54 @@
         });
 
         function fetchGroups() {
-            fetch(`/api/group/user/${user}`)
+            let userID = localStorage.getItem("userID");
+            fetch(`/api/group/user/${userID}`)
                 .then(response => response.json())
-                .then(data => {
+                .then(groups => {
                     let tableBody = document.querySelector("#groupTable tbody");
                     tableBody.innerHTML = "";
 
-                    data.forEach(group => {
+                    groups.forEach(group => {
                         let row = document.createElement("tr");
 
-                        let deviceList = group.devices.map(device =>
-                            `<span>${device.name} 
-                                <button onclick="removeDevice('${group.id}', '${device.id}')">❌</button>
-                            </span>`).join(", ");
-
                         row.innerHTML = `
-                            <td>${group.name}</td>
-                            <td>${deviceList || "No devices"}</td>
-                            <td>
-                                <button onclick="deleteGroup('${group.id}')">Delete Group</button>
-                                <input type="text" id="device-${group.id}" placeholder="Device ID">
-                                <button onclick="addDevice('${group.id}')">Add Device</button>
-                            </td>
-                        `;
+                    <td>${group.name}</td>
+                    <td id="devices-${group.id}">Loading...</td>
+                    <td>
+                        <button onclick="deleteGroup('${group.id}')">Delete Group</button>
+                        <input type="text" id="device-${group.id}" placeholder="Device UUID">
+                        <button onclick="addDevice('${group.id}')">Add Device</button>
+                    </td>
+                    <td>${group.uuid}</td>
+                `;
 
                         tableBody.appendChild(row);
+                        fetchDevicesForGroup(group.id);
                     });
                 })
                 .catch(error => console.error("Error loading groups:", error));
         }
+
+        function fetchDevicesForGroup(groupId) {
+            fetch(`/api/device/group/${groupId}`)
+                .then(response => response.json())
+                .then(devices => {
+                    let deviceContainer = document.getElementById(`devices-${groupId}`);
+
+                    if (devices.length === 0) {
+                        deviceContainer.innerHTML = "<span class='text-muted'>No devices</span>";
+                        return;
+                    }
+
+                    deviceContainer.innerHTML = devices.map(device =>
+                        `<span>${device.uuid} 
+                    <button onclick="removeDevice('${groupId}', '${device.id}')">❌</button>
+                </span>`
+                    ).join("<br>");
+                })
+                .catch(error => console.error(`Error fetching devices for group ${groupId}:`, error));
+        }
+
 
         function createGroup() {
             let groupName = document.getElementById("groupName").value.trim();
@@ -75,19 +95,20 @@
                 return;
             }
 
-            fetch("/api/groups", {
+            fetch("/api/group/create", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
+                        user_id: localStorage.getItem("userID"),
                         name: groupName
                     })
                 })
                 .then(response => response.json())
                 .then(() => {
                     document.getElementById("groupName").value = "";
-                    fetchGroups(); // Refresh list
+                    fetchGroups();
                 })
                 .catch(error => console.error("Error creating group:", error));
         }
@@ -95,39 +116,61 @@
         function deleteGroup(groupId) {
             if (!confirm("Are you sure you want to delete this group?")) return;
 
-            fetch(`/api/groups/${groupId}`, {
+            fetch(`/api/group/${groupId}`, {
                     method: "DELETE"
                 })
-                .then(() => fetchGroups()) // Refresh list
+                .then(() => fetchGroups())
                 .catch(error => console.error("Error deleting group:", error));
         }
 
         function addDevice(groupId) {
-            let deviceId = document.getElementById(`device-${groupId}`).value.trim();
-            if (!deviceId) {
-                alert("Enter a device ID");
+            let deviceUUId = document.getElementById(`device-${groupId}`).value.trim();
+            if (!deviceUUId) {
+                alert("Enter a device UUID");
                 return;
             }
 
-            fetch(`/api/group/${groupId}/add?devicesIds=${deviceId}`, {
+            fetch(`/api/group/${groupId}/add`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        device_id: deviceId
+                        devicesIds: [deviceUUId]
                     })
                 })
-                .then(() => fetchGroups()) // Refresh list
-                .catch(error => console.error("Error adding device:", error));
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw new Error(err.message);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(() => fetchGroups())
+                .catch(error => {
+                    console.error("Error adding device:", error);
+                    alert("Failed to add device: " + error.message);
+                });
         }
 
         function removeDevice(groupId, deviceId) {
             fetch(`/api/group/${groupId}/remove/${deviceId}`, {
-                    method: "DELETE"
+                    method: "PATCH"
                 })
-                .then(() => fetchGroups()) // Refresh list
-                .catch(error => console.error("Error removing device:", error));
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw new Error(err.message);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(() => fetchGroups())
+                .catch(error => {
+                    console.error("Error adding device:", error);
+                    alert("Failed to add device: " + error.message);
+                });
         }
     </script>
 </body>
