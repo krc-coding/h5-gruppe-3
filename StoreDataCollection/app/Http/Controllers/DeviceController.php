@@ -12,11 +12,7 @@ class DeviceController extends Controller
 {
     public function getDeviceByUuid(Request $request)
     {
-        $request->validate([
-            'uuid' => 'required|string'
-        ]);
-
-        $device = Devices::where('uuid', $request->uuid)->first();
+        $device = Devices::where('uuid', $request->query('uuid'))->first();
 
         if (!$device) {
             return response()->json(['message' => 'Device not found'], 404);
