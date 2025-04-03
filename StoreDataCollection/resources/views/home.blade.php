@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
 </head>
 
@@ -40,7 +40,7 @@
             event.preventDefault();
 
             let uuid = document.getElementById('uuid').value.trim();
-            let apiUrl = uuid ? `/api/data/device/${uuid}` : `/api/data`;
+            let apiUrl = uuid ? `/api/search?uuid=${uuid}` : `/api/data`;
 
             fetch(apiUrl)
                 .then(response => response.json())

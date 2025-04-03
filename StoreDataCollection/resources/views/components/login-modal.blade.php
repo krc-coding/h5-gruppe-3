@@ -21,16 +21,33 @@
             let modal = document.getElementById("loginModal");
             let loginBtn = document.getElementById("loginBtn");
             let closeBtn = document.querySelector(".close");
+            let loginForm = document.getElementById("loginForm");
+            let loginSubmitBtn = document.getElementById("loginBtnSubmit");
 
-            if (!modal || !loginBtn || !closeBtn) {
+            function checkAuthStatus() {
+                let authToken = localStorage.getItem("authToken");
+                if (authToken) {
+                    loginBtn.innerText = "Profile";
+                    loginBtn.classList.add("logged-in");
+                    loginBtn.onclick = function() {
+                        window.location.href = "/profile";
+                    };
+                } else {
+                    loginBtn.innerText = "Login";
+                    loginBtn.classList.remove("logged-in");
+                    loginBtn.onclick = function() {
+                        modal.style.display = "flex";
+                        document.body.classList.add("modal-open");
+                    };
+                }
+            }
+
+            if (!modal || !loginBtn || !closeBtn || !loginSubmitBtn) {
                 console.error("Modal or buttons not found in the DOM.");
                 return;
             }
 
-            loginBtn.addEventListener("click", function() {
-                modal.style.display = "flex";
-                document.body.classList.add("modal-open");
-            });
+            checkAuthStatus();
 
             closeBtn.onclick = function() {
                 modal.style.display = "none";
@@ -44,13 +61,12 @@
                 }
             };
 
-            document.getElementById("loginBtnSubmit").addEventListener("click", function(event) {
+            loginSubmitBtn.addEventListener("click", function(event) {
                 event.preventDefault();
                 submitForm("/api/login");
             });
 
             function submitForm(apiUrl) {
-                let loginForm = document.getElementById("loginForm");
                 if (!loginForm.checkValidity()) {
                     loginForm.reportValidity();
                     return;
@@ -72,12 +88,14 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        if (data.data.token) {
-                            localStorage.setItem("authToken", data.data.token);
+                        if (data && data.token) {
+                            localStorage.setItem("authToken", data.token);
+                            localStorage.setItem("userID", data.user.id);
+                            localStorage.setItem("userName", data.user.username);
                             modal.style.display = "none";
-
+                            window.location.reload();
                         } else {
-                            alert(data.message || "login failed.");
+                            alert(data.error_message || "Login failed.");
                         }
                     })
                     .catch(error => {

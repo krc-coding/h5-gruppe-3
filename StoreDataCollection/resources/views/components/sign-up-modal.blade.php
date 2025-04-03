@@ -84,14 +84,15 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        if (data.token) {
-                            console.log(data.token)
+                        if (data && data.token) {
                             localStorage.setItem("authToken", data.token);
-
+                            localStorage.setItem("userID", data.user.id);
+                            localStorage.setItem("userName", data.user.username);
                             signUpModal.style.display = "none";
                             document.body.classList.remove("modal-open");
+                            window.location.reload();
                         } else {
-                            alert(data.message || "Sign-up failed.");
+                            alert(data.message || "Login failed.");
                         }
                     })
                     .catch(error => {
