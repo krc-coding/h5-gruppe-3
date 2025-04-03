@@ -2,9 +2,10 @@
 #define MessageHandler_h
 
 #include "IncludeFile.h"
+#include <PubSubClient.h>
 
-WiFiClient wifiClient;
-MqttClient mqttClient(wifiClient);
+WiFiClient mqttWifiClient;
+PubSubClient mqttClient(mqttWifiClient);
 
 class MessageHandler {
 private:
@@ -13,34 +14,26 @@ private:
 
 public:
   void init() {
-    char mac[18];
-    getMacAddress(mac);
-    String topic = config.topic;
-
     Serial.print("Attempting to connect to the MQTT broker: ");
     Serial.println(config.mqtt_host);
 
-    if (!mqttClient.connect(config.mqtt_host, port)) {
+    mqttClient.setServer(config.mqtt_host, port);
+    if (!mqttClient.connect("DataCollection", config.mqtt_user, config.mqtt_pass)) {
       Serial.print("MQTT connection failed! Error code = ");
-      Serial.println(mqttClient.connectError());
+      Serial.println(mqttClient.state());
 
-      while (1)
+      Display::PrintToDisplay("Please restart", 40, 160, 2);
+      Display::PrintToDisplay("the device!", 40, 180, 2);
+
+      // Prevent the program from continuing further,
+      // as the device is not setup correctly.
+      while (true) {
         ;
+      }
     }
 
     Serial.println("You're connected to the MQTT broker!");
     Serial.println();
-  }
-
-  void postMessage(float temperature) {
-    char mac[18];
-
-    getMacAddress(mac);
-    mqttClient.beginMessage(mac);
-    mqttClient.print("{\"temperature\":");
-    mqttClient.print(temperature);
-    mqttClient.print("}");
-    mqttClient.endMessage();
   }
 };
 
