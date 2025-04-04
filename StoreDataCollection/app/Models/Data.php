@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Data extends Model
 {
+    // factory is to create test data 
     use HasFactory;
     public $timestamps = false;
     protected $fillable = [

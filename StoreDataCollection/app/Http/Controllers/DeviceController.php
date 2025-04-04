@@ -14,7 +14,7 @@ class DeviceController extends Controller
     {
         $device = Devices::where('uuid', $request->query('uuid'))->first();
 
-        if (!$device) {
+        if (!$device) { // if nothing is found return 404.
             return response()->json(['message' => 'Device not found'], 404);
         }
 

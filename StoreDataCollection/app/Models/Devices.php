@@ -17,11 +17,13 @@ class Devices extends Model
 
     protected $hidden = [];
 
+    // this is the many to many relation.
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Groups::class);
     }
 
+    // 1 to many, this is the one where 1 device has many data.
     public function data(): HasMany
     {
         return $this->hasMany(Data::class, 'device_id');

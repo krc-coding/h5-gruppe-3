@@ -19,13 +19,17 @@ class GroupController extends Controller
         $request->validate([
             'uuid' => 'required|string'
         ]);
+
         $group = Groups::where('uuid', $request->uuid)->first();
-        if ($group) {
+        if ($group) { // if we find a group on the uuid.
+            // We gets all the data from device_id, we get the ids from plucking it out of group devices relation,
+            // then makes it into data resource.
             return Data::whereIn('device_id', $group->devices()->pluck('id'))->get()->mapInto(DataResource::class);
         }
 
         $device = Devices::where('uuid', $request->uuid)->first();
-        if ($device) {
+        if ($device) { // if we find a device on the uuid
+            // We get the data from the relation.
             return $device->data()->get()->mapInto(DataResource::class);
         }
 
@@ -48,6 +52,7 @@ class GroupController extends Controller
             'uuid' => 'required|exists:groups,uuid',
         ]);
 
+        // Find the first group with the same uuid and makes an group resource out of it.
         return new GroupResource(Groups::where('uuid', $request->uuid)->first());
     }
 
@@ -76,9 +81,11 @@ class GroupController extends Controller
     {
         $request->validate([
             'devicesUuids' => 'required|array',
+            // the dot star means that it's going through all the elements in the array.
             'devicesUuids.*' => 'required|exists:devices,uuid',
         ]);
 
+        // whereIn gives us an array of all the devices there is in the array of uuids.
         $devices = Devices::whereIn('uuid', $request->devicesUuids)->get();
         $group->devices()->attach($devices);
         return response()->json(['message' => 'Devices attached successfully']);
@@ -91,7 +98,7 @@ class GroupController extends Controller
         ]);
 
         $group->name = $request->name;
-        $group->save();
+        $group->save(); // Save changes on database
 
         return new GroupResource($group);
     }

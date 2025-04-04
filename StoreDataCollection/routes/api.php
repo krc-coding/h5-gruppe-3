@@ -8,9 +8,11 @@ use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 
+// these route is only baseURL/api/
 Route::post('/login', [UserController::class, 'login']);
 Route::delete('/logout/{user}', [UserController::class, 'logout']);
 
+// but there has the prefix after e.g. baseURL/api/data/
 Route::prefix('/data')->group(function () {
     Route::post('/create', [DataController::class, 'createData']);
     Route::get('/', [DataController::class, 'getAllData']);
@@ -34,14 +36,18 @@ Route::prefix('/user')->group(function () {
 });
 Route::prefix('/group')->group(function () {
     Route::post('/create', [GroupController::class, 'create']);
-    Route::post('{group}/add', [GroupController::class, 'addDeviceToGroup']);
     Route::get('/', [GroupController::class, 'getAllGroups']);
     Route::get('/uuid', [GroupController::class, 'getByGroupUuid']);
-    Route::get('/{group}', [GroupController::class, 'getByGroupId']);
     Route::get('/user/{user}', [GroupController::class, 'getByUserId']);
-    Route::put('/{group}', [GroupController::class, 'update']);
-    Route::patch('{group}/remove/{device}', [GroupController::class, 'removeDeviceFromGroup']);
-    Route::delete('/{group}', [GroupController::class, 'delete']);
+
+    // you kan make prefix within a prefix.
+    Route::prefix('/{group}')->group(function () {
+        Route::post('/add', [GroupController::class, 'addDeviceToGroup']);
+        Route::get('/', [GroupController::class, 'getByGroupId']);
+        Route::put('/', [GroupController::class, 'update']);
+        Route::patch('/remove/{device}', [GroupController::class, 'removeDeviceFromGroup']);
+        Route::delete('/', [GroupController::class, 'delete']);
+    });
 });
 Route::prefix('/search')->group(function () {
     Route::get('/', [GroupController::class, 'search']);

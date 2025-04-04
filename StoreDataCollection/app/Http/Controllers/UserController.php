@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    // this is a help function not an api
     private function createToken(User $user)
     {
         $token = AccessToken::create([
@@ -41,6 +42,9 @@ class UserController extends Controller
     {
         $request->validate([
             'username' => 'required|unique:users,username',
+            // With the 'confirmed' tag the frontend needs to send two identically passwords.
+            // 'Password' is used to set password standarts on our webside, 
+            // it can do more then set a minimum, but we didn't see a reason to add more rules.
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
@@ -49,6 +53,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Here we return a user resource and a token created from our help function
         return response()->json(['user' => new UserResource($user), 'token' => UserController::createToken($user)->token], 201);
     }
 
@@ -61,7 +66,7 @@ class UserController extends Controller
 
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
-        $user->save();
+        $user->save(); // Save to database
 
         return new UserResource($user);
     }
@@ -73,20 +78,20 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
-        if (!auth()->attempt($data)) {
+        if (!auth()->attempt($data)) { // 'attempt' is making a error, but it works
             return response(['error_message' => 'Incorrect username or password.'], 401);
         }
 
         $user = User::where('username', $data["username"])->first();
         $tokens = $user->accessTokens();
-        $tokens->delete();
+        $tokens->delete(); // Logout all other devices that is using this user
 
         return response()->json(['user' => new UserResource($user), 'token' => UserController::createToken($user)->token], 201);
     }
 
     public function logout(User $user)
     {
-        $tokens = $user->accessTokens()->delete();
+        $user->accessTokens()->delete();
         return response()->json([], 204);
     }
 

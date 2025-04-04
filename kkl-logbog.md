@@ -31,3 +31,10 @@
 
 2-4-25
  - Got my thing merge and fixed the small errors coming from it
+
+3-4-25
+ - sick
+
+4-4-25
+ - half sick
+ - code comments
