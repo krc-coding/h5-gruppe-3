@@ -41,6 +41,10 @@
     </div>
 
     <script>
+        //variables
+        const groupDevicesCache = {};
+
+        //runs when page load
         document.addEventListener("DOMContentLoaded", function() {
             fetchGroups();
         });
@@ -52,10 +56,9 @@
                 .then(groups => {
                     let tableBody = document.querySelector("#groupTable tbody");
                     tableBody.innerHTML = "";
-
+                    //makes a row for each group connected to user account
                     groups.forEach(group => {
                         let row = document.createElement("tr");
-
                         row.innerHTML = `
                     <td>${group.name}</td>
                     <td id="devices-${group.id}">Loading...</td>
@@ -78,6 +81,9 @@
             fetch(`/api/device/group/${groupId}`)
                 .then(response => response.json())
                 .then(devices => {
+                    // Cache devices for later use
+                    groupDevicesCache[groupId] = devices;
+
                     let deviceContainer = document.getElementById(`devices-${groupId}`);
 
                     if (devices.length === 0) {
@@ -85,6 +91,7 @@
                         return;
                     }
 
+                    //shows device UUID
                     deviceContainer.innerHTML = devices.map(device =>
                         `<span>${device.uuid} 
                     <button onclick="removeDevice('${groupId}', '${device.id}')" class="btn-warning">Remove Device</button>
@@ -136,6 +143,16 @@
                 return;
             }
 
+            //checks if device already exists
+            const cachedDevices = groupDevicesCache[groupId] || [];
+            const alreadyExists = cachedDevices.some(device => device.uuid === deviceUUId);
+
+            if (alreadyExists) {
+                alert("This device is already in the group.");
+                return;
+            }
+
+            // adding device to group
             fetch(`/api/group/${groupId}/add`, {
                     method: "POST",
                     headers: {
@@ -161,6 +178,8 @@
         }
 
         function removeDevice(groupId, deviceId) {
+            if (!confirm("Are you sure you want to delete this device from this group?")) return;
+
             fetch(`/api/group/${groupId}/remove/${deviceId}`, {
                     method: "PATCH"
                 })
