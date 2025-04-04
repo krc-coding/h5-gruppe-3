@@ -37,11 +37,11 @@ class GroupApiTest extends TestCase
 
     public function test_add_many_device_to_group()
     {
-        $devices = Devices::factory()->count(12)->create()->pluck('id')->toArray();
+        $devicesUuids = Devices::factory()->count(12)->create()->pluck('uuid')->toArray();
         $group = Groups::factory()->create();
 
-        $response = $this->post($this::base . "/{$group->id}/add", [
-            'devicesIds' => $devices
+        $response = $this->postJson($this::base . "/{$group->id}/add", [
+            'devicesUuids' => $devicesUuids
         ]);
 
         $response->assertStatus(200);
