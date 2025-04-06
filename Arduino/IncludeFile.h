@@ -9,6 +9,7 @@
 #include <WiFiUdp.h>
 #include <NTPClient.h>
 #include <string.h>
+#include <ArduinoJson.h>
 
 #include "SDCardWrapper.h"
 #include "Config.h"
