@@ -95,7 +95,7 @@ void loop() {
   document["people"] = random(1, 100);
   document["products_pr_person"] = random(1, 100);
   document["total_value"] = random(1, 100);
-  document["production_categories"] = buffer;
+  document["product_categories"] = buffer;
   document["packages_received"] = random(1, 100);
   document["packages_delivered"] = random(1, 100);
   document["data_recorded_at"] = timeClient.getEpochTime();
