@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccessToken extends Model
 {
-    // removes the created_at and updated_at in the database.
+    // Stops the auto fill for filling in the created_at and updated_at in the database.
     public $timestamps = false;
-    // this is used to fill in what there needs t be when creating
+
+    // This is used to fill in, what there needs to be when creating
     protected $fillable =
     [
         'user_id',
@@ -17,7 +18,7 @@ class AccessToken extends Model
         'expire_at',
     ];
 
-    // these are not received from the database
+    // These are not received from the database
     protected $hidden =
     [
         'id',
@@ -25,7 +26,7 @@ class AccessToken extends Model
         'expire_at',
     ];
 
-    // relation to the user table, this is a 1 to many, many token to one user.
+    // Relation to the user table, this is a 1 to many, many token to one user.
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

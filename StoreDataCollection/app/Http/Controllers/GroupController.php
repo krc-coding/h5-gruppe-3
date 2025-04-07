@@ -21,14 +21,14 @@ class GroupController extends Controller
         ]);
 
         $group = Groups::where('uuid', $request->uuid)->first();
-        if ($group) { // if we find a group on the uuid.
+        if ($group) { // If we find a group on the uuid.
             // We gets all the data from device_id, we get the ids from plucking it out of group devices relation,
             // then makes it into data resource.
             return Data::whereIn('device_id', $group->devices()->pluck('id'))->get()->mapInto(DataResource::class);
         }
 
         $device = Devices::where('uuid', $request->uuid)->first();
-        if ($device) { // if we find a device on the uuid
+        if ($device) { // If we find a device on the uuid
             // We get the data from the relation.
             return $device->data()->get()->mapInto(DataResource::class);
         }
@@ -81,13 +81,23 @@ class GroupController extends Controller
     {
         $request->validate([
             'devicesUuids' => 'required|array',
-            // the dot star means that it's going through all the elements in the array.
+            // The dot star means that it's going through all the elements in the array.
             'devicesUuids.*' => 'required|exists:devices,uuid',
         ]);
 
-        // whereIn gives us an array of all the devices there is in the array of uuids.
-        $devices = Devices::whereIn('uuid', $request->devicesUuids)->get();
-        $group->devices()->attach($devices);
+        $existingIds = $group->devices()->pluck('devices.id')->toArray();
+        
+        // 'whereIn' gives us an array of all the devices there is in the array.
+        $devices = Devices::whereIn('uuid', $request->devicesUuids)
+            ->whereNotIn('id', $existingIds)
+            ->get();
+
+        if (count($request->devicesUuids) !== count($devices)) {
+            return response()->json(['message' => 'Device already attached']);
+        }
+
+        // Only add devices to the group there isn't there before.
+        $group->devices()->syncWithoutDetaching($devices);
         return response()->json(['message' => 'Devices attached successfully']);
     }
 
