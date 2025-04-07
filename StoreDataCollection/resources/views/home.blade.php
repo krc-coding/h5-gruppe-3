@@ -82,7 +82,7 @@
                 </thead>
                 <tbody>`;
 
-                    // filles in the data
+                    // fills in the data
                     data.forEach(device => {
                         let categories = JSON.parse(device.product_categories);
                         table += `<tr>
