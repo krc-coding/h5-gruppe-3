@@ -9,6 +9,8 @@
 // If the server host is using ssl, then change the client below to the SSLClient.
 // WiFiSSLClient wifiClient;
 WiFiClient wifiClient;
+
+// Client used for sending http request to server.
 HttpClient client = HttpClient(wifiClient, SERVER_HOST, SERVER_PORT);
 
 void ConnectWifi(const char* ssid, const char* pass) {
