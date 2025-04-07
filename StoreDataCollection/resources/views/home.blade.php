@@ -73,6 +73,7 @@
                         table += `<th onclick="sortTable(${index + 3})">${category} <span></span></th>`;
                     });
 
+                    //indexes with categoryColumns.length to allow for more categories without having to change anything
                     table += `
                         <th onclick="sortTable(${categoryColumns.length + 3})">Packages Received <span></span></th>
                         <th onclick="sortTable(${categoryColumns.length + 4})">Packages Delivered <span></span></th>
@@ -81,6 +82,7 @@
                 </thead>
                 <tbody>`;
 
+                    // fills in the data
                     data.forEach(device => {
                         let categories = JSON.parse(device.product_categories);
                         table += `<tr>
