@@ -86,19 +86,19 @@ class GroupController extends Controller
         ]);
 
         $existingIds = $group->devices()->pluck('devices.id')->toArray();
-        
+
         // 'whereIn' gives us an array of all the devices there is in the array.
         $devices = Devices::whereIn('uuid', $request->devicesUuids)
             ->whereNotIn('id', $existingIds)
             ->get();
 
         if (count($request->devicesUuids) !== count($devices)) {
-            return response()->json(['message' => 'Device already attached']);
+            return response(400);
         }
 
         // Only add devices to the group there isn't there before.
         $group->devices()->syncWithoutDetaching($devices);
-        return response()->json(['message' => 'Devices attached successfully']);
+        return response(204);
     }
 
     public function update(Request $request, Groups $group)
