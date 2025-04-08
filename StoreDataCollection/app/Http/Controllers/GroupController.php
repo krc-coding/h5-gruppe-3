@@ -21,9 +21,9 @@ class GroupController extends Controller
         ]);
 
         $group = Groups::where('uuid', $request->uuid)->first();
-        if ($group) { // If we find a group on the uuid.
-            // We gets all the data from device_id, we get the ids from plucking it out of group devices relation,
-            // then makes it into data resource.
+        if ($group) { 
+            // If a group with the searched UUID exists.
+            // Then return the data from all devices in the group.
             return Data::whereIn('device_id', $group->devices()->pluck('id'))->get()->mapInto(DataResource::class);
         }
 
