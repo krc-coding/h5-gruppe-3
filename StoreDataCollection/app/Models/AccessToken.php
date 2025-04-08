@@ -18,7 +18,7 @@ class AccessToken extends Model
         'expire_at',
     ];
 
-    // These are not received from the database
+    // These are removed from the response
     protected $hidden =
     [
         'id',
