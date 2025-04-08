@@ -80,7 +80,7 @@ class DeviceApiTest extends TestCase
     public function test_if_device_exits()
     {
         $device = Devices::factory()->create();
-        $this->get($this::base . "/exits?uuid={$device->uuid}")
+        $this->get($this::base . "/exists?uuid={$device->uuid}")
             ->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [

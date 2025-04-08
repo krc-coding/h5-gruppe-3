@@ -20,7 +20,9 @@ class DataController extends Controller
 
     public function getByGruop(Groups $group)
     {
+        // gets an array of devices ids.
         $deviceIds = $group->devices()->get()->pluck('id');
+        // gets all data from all the elements in the device ids array.
         return Data::whereIn('device_id', $deviceIds)->get()->mapInto(DataResource::class);
     }
 
@@ -34,10 +36,12 @@ class DataController extends Controller
         $request->validate([
             'people' => 'required|integer',
             'products_pr_person' => 'required|integer',
+            // total_value is a decimal there is a requirement of 0 to 2 decimals.
             'total_value' => 'required|decimal:0,2',
             'product_categories' => 'required|json',
             'packages_received' => 'nullable|integer',
             'packages_delivered' => 'nullable|integer',
+            // there needs to de a device in the database with this uuid.
             'device_uuid' => 'required|exists:devices,uuid',
         ]);
 

@@ -23,7 +23,7 @@ class Groups extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    
     public function devices(): BelongsToMany
     {
         return $this->belongsToMany(Devices::class);

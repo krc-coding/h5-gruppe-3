@@ -19,13 +19,17 @@ class GroupController extends Controller
         $request->validate([
             'uuid' => 'required|string'
         ]);
+
         $group = Groups::where('uuid', $request->uuid)->first();
-        if ($group) {
+        if ($group) { 
+            // If a group with the searched UUID exists.
+            // Then return the data from all devices in the group.
             return Data::whereIn('device_id', $group->devices()->pluck('id'))->get()->mapInto(DataResource::class);
         }
 
         $device = Devices::where('uuid', $request->uuid)->first();
-        if ($device) {
+        if ($device) { // If we find a device on the uuid
+            // We get the data from the relation.
             return $device->data()->get()->mapInto(DataResource::class);
         }
 
@@ -48,6 +52,7 @@ class GroupController extends Controller
             'uuid' => 'required|exists:groups,uuid',
         ]);
 
+        // Find the first group with the same uuid and makes an group resource out of it.
         return new GroupResource(Groups::where('uuid', $request->uuid)->first());
     }
 
@@ -76,12 +81,24 @@ class GroupController extends Controller
     {
         $request->validate([
             'devicesUuids' => 'required|array',
+            // The dot star means that it's going through all the elements in the array.
             'devicesUuids.*' => 'required|exists:devices,uuid',
         ]);
 
-        $devices = Devices::whereIn('uuid', $request->devicesUuids)->get();
-        $group->devices()->attach($devices);
-        return response()->json(['message' => 'Devices attached successfully']);
+        $existingIds = $group->devices()->pluck('devices.id')->toArray();
+
+        // 'whereIn' gives us an array of all the devices there is in the array.
+        $devices = Devices::whereIn('uuid', $request->devicesUuids)
+            ->whereNotIn('id', $existingIds)
+            ->get();
+
+        if (count($request->devicesUuids) !== count($devices)) {
+            return response(400);
+        }
+
+        // Only add devices to the group there isn't there before.
+        $group->devices()->syncWithoutDetaching($devices);
+        return response(204);
     }
 
     public function update(Request $request, Groups $group)
@@ -91,7 +108,7 @@ class GroupController extends Controller
         ]);
 
         $group->name = $request->name;
-        $group->save();
+        $group->save(); // Save changes on database
 
         return new GroupResource($group);
     }
