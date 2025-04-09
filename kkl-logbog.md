@@ -33,8 +33,11 @@
  - Got my thing merge and fixed the small errors coming from it
 
 3-4-25
- - sick
+ - Sick
 
 4-4-25
- - half sick
- - code comments
+ - Half sick
+ - Code comments
+
+7-4-25 -> 9-4-25
+ - Documentation
