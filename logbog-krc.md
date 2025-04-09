@@ -53,3 +53,14 @@
 04-04-2025:
     - Finalized arduino - rabbitmq connection.
     - Setup rabbitmq - laravel connection using laravel artisan command.
+
+07-04-2025:
+    - Wrote code documentation for arduino code.
+
+08-04-2025:
+    - Created documentation folder and wrote initial Case and ProductRepport files.
+
+09-04-2025:
+    - Updated case and product repport files.
+    - Created instructions file for converting markdown with mermaid to pdf.
+    - Created setup guide for arduino.
