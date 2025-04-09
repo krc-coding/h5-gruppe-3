@@ -10,20 +10,20 @@
 
 2. **Install/update composer in project**
     - Using a terminal to navigate to the project and go into /StoreDataCollection 
-    - Run: composer install
+    - Run: `composer install`
 
 3. **Env**
     - In terminal run both: 
-        * cp .env.example .env
-        * php artisan key:generate
+        * `cp .env.example .env`
+        * `php artisan key:generate`
     - Update your DB settings to fit your database
 
 4. **Database**
     - Create a new database with the same name as you used in your env
-    - In the terminal run: php artisan migrate
+    - In the terminal run: `php artisan migrate`
 
 5. **Run degub**
-    - Run: php artisan serve 
+    - Run: `php artisan serve` 
 
 ## Debugging
 ### Frontend
@@ -37,9 +37,9 @@ We recommend using postman, as we have an collection in the files called: H5.pos
 Backend as an integration test setuped.
 
 * __This is not necessary__. In testing we can use another db if we don't want to use our live:
-    * In terminal run: cp .env.testing.example .env.testing
+    * In terminal run: `cp .env.testing.example .env.testing`
     * Update the db settings and copy APP_KEY from .env
     * Create the db on your db
-    * Run: php artisan migrate --env=testing
+    * Run: `php artisan migrate --env=testing`
 
-* To try it run: php artisan test
+* To try it run: `php artisan test`
