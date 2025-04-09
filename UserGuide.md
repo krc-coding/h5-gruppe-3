@@ -13,6 +13,7 @@ if you want to get data from a specific device (normaly your own device) you wil
 (device UUID's are displayed on the device screen)
 
 here are some device UUID's you can try:
+
 - 63ea5a6f-506d-36e2-a711-3d96e1fc8b7b
 - 0612383f-4d7e-36a2-a501-3e104209f0b4
 - 46b2c477-91ec-34f4-aba0-acb4f1c4d48f
@@ -45,7 +46,8 @@ in the row of the group you want to add it to and click the "Add Device" button.
 
 (you can see the UUID's of devices thats in the group undet the collum "Devices")
 
-**here are some device UUID's you can try:**
+here are some device UUID's you can try:
+
 - 63ea5a6f-506d-36e2-a711-3d96e1fc8b7b
 - 0612383f-4d7e-36a2-a501-3e104209f0b4
 - 46b2c477-91ec-34f4-aba0-acb4f1c4d48f
@@ -69,6 +71,7 @@ now if you go back to the search page (button in the top left corner) and put in
 (you dont need to be logged in to use the group UUID's)
 
 if you deleted your group you can use mine:
+
 - 68ed957b-c465-401e-9899-5977275bdcc0
 
 **Logout:**
