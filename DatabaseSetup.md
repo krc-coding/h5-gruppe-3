@@ -37,5 +37,4 @@ erDiagram
     device_group }o--|| groups : device_group_group_id_fkey
     device_group }o--|| devices : device_group_device_id_fkey
     data }o--|| devices : data_device_id_fkey
-
 ```
