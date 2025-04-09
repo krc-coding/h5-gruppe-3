@@ -5,3 +5,4 @@ Libraries to install for arduino code to function:
 - NTPClient by Fabrice Weinberg
 - ArduinoHttpClient by Arduino
 - PubSubClient by Nick O'Leary
+- ArduinoJson by Benoit Blanchon

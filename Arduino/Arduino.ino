@@ -13,13 +13,10 @@ String deviceUUID = "";
 void setup() {
   // Initialize serial:
   Serial.begin(9600);
-  // Wait 5 sek for serial port to connect. Needed for native USB port only
-  // delay(5000);
-  while (!Serial) {
-    ;  // wait for serial port to connect. Needed for native USB port only
-  }
 
-  // carrier.noCase();
+  // Wait 5 seconds to allow time for serial port to connect, only needed for native USB port debugging
+  delay(5000);
+
   carrier.withCase();
   carrier.begin();
 
@@ -67,10 +64,12 @@ void printWiFiStatus() {
 void loop() {
   // Wait 1 minute
   delay(1000 * 60 * 1);
+
+  // Update the time client timestamp.
   timeClient.update();
 
+  // Create json document for product categories.
   JsonDocument productCategories;
-
   int total = 101;
   int meat = random(0, total);
   total = total - meat;
@@ -85,13 +84,13 @@ void loop() {
   productCategories["vegetables"] = vegetables;
   productCategories["candy"] = candy;
 
+  // Serialize product categories document, before creating the final mqtt payload document.
   char buffer[255];
   serializeJson(productCategories, buffer);
 
+  // Create json document for mqtt payload.
   JsonDocument document;
-
   document["device_uuid"] = deviceUUID;
-
   document["people"] = random(1, 100);
   document["products_pr_person"] = random(1, 100);
   document["total_value"] = random(1, 100);
@@ -100,5 +99,6 @@ void loop() {
   document["packages_delivered"] = random(1, 100);
   document["data_recorded_at"] = timeClient.getEpochTime();
 
+  // Call function for sending data over mqtt.
   messageHandler.sendData(document);
 }

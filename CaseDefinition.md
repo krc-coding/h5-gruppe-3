@@ -89,12 +89,17 @@ A retail store wants to optimize its operations by understanding customer behavi
     - Server: Runs an nginx web server that directs traffic to a backend written in PHP using the Laravel framework.
     - Backend: Receives data through a message broker and stores it in a MariaDB SQL server.
     - Frontend: Uses Laravel blade templates to display data.
+
     ```mermaid
-    graph TD;
-    A[IoT]---B[Message broker]
+    ---
+    title: System setup
+    ---
+    graph LR;
+    E[Frontend] --- C
+    A[IoT]-->B[Message broker]
     B-->C[Backend]
-    C-->D[Database]
-    E[Frontend]-->C
+    C-->D[(Database)]
+    A-- HTTP One time (on startup) ---C
     ```
 
 3. **Functional Requirements:**
