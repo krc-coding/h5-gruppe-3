@@ -36,9 +36,8 @@
     - The frontend must be able to display the collected data.
     - The frontend must have an admin page:
         - Login + logout.
-        - Where you can see a list of devices.
         - Where you can group devices as a single unit.
-        - Manage devices + grouped devices.
+        - Manage grouped devices.
     - Data display must include filtering and searching options.
     - All data must be accessible to everyone.
     - CI/CD Deployment.
@@ -95,5 +94,171 @@ erDiagram
 
 # User guide
 
+The guide is designed for <https://krc-coding.dk>
+
+**as a user you can:** 
+
+**Get all data:**
+
+just click the "Search" button with the text field empty. (might not currently work as there is to much data) 
+
+**Get data from a specific device:**
+
+if you want to get data from a specific device (normaly your own device) you will have to type in the UUID of the device before clicking search. 
+
+(device UUID's are displayed on the device screen)
+
+here are some device UUID's you can try:
+
+- 63ea5a6f-506d-36e2-a711-3d96e1fc8b7b
+- 0612383f-4d7e-36a2-a501-3e104209f0b4
+- 46b2c477-91ec-34f4-aba0-acb4f1c4d48f
+
+**Sort the data:**
+
+after fetching some data just click on the colum header that you want the data sorted by, first click will sort in decenting order (biggest number first) and the second ascending. (smallest number first)
+
+**Signup/Login:**
+
+just click the "Login" button in the top right corner and login.
+
+if you dont already have an account click the signup button and create one.
+
+**User profile:**
+
+once logged in the login button will be replaced by a button that will lead you to your profile.
+
+**Create a group:**
+
+on the profile page just type a name into the text field and click the "Create Group" button.
+after a group is created you now have a row that states the name of the group, what devices are in it, some actions you can take and the Group UUID
+
+(this makes it so that you can get data from multiple devices at the same time without having to get all data)
+
+**Add device to group:**
+
+to add a device to a group you need to type in the UUID of the device into the text field in the "Action" collum,
+in the row of the group you want to add it to and click the "Add Device" button.
+
+(you can see the UUID's of devices thats in the group undet the collum "Devices")
+
+here are some device UUID's you can try:
+
+- 63ea5a6f-506d-36e2-a711-3d96e1fc8b7b
+- 0612383f-4d7e-36a2-a501-3e104209f0b4
+- 46b2c477-91ec-34f4-aba0-acb4f1c4d48f
+
+**Remove device from group:**
+
+simply finde the device you wonna Remove on the Device list and click remove you will then be prompted it you are sure clicking ok will remove it.
+
+(removed devices can be added back later so dont worry to much about accidently removing one)
+
+**Delete Group:**
+
+under the "Actions" collum click the "Delete Group" button you will then be prompted if you are sure.
+
+(this will permanently delete the group so if you want the group back you will have to create a new one)
+
+**Get group data:**
+
+now if you go back to the search page (button in the top left corner) and put in your group uuid it before clicking search you will now get the data from all devices in the group.
+
+(you dont need to be logged in to use the group UUID's)
+
+if you deleted your group you can use mine:
+
+- 68ed957b-c465-401e-9899-5977275bdcc0
+
+**Logout:**
+
+to log out go the your profile page and click the "Logout" button in the top right corner.
+
+(this will automaticly send you back to the search page)
+
 
 # Dev setup guide
+
+### **Requirements**
+- php 8.3.x NTS (Not Thread Safe)
+- Composer
+- MariaDB
+
+## **Setup**
+1. **Git clone**
+    - Clone the project down on your machine
+
+2. **Install/update composer in project**
+    - Using a terminal to navigate to the project and go into /StoreDataCollection 
+    - Run: `composer install`
+
+3. **Env**
+    - In terminal run both: 
+        * `cp .env.example .env`
+        * `php artisan key:generate`
+    - Update your DB settings to fit your database
+
+4. **Database**
+    - Create a new database with the same name as you used in your env
+    - In the terminal run: `php artisan migrate`
+
+5. **Run degub**
+    - Run: `php artisan serve` 
+
+## Debugging
+### Frontend
+You can debug by going to localhost:8000
+
+### Backend
+You need to send http request.
+We recommend using postman, as we have an collection in the files called: H5.postman_collection.json
+
+## Integration testing
+Backend as an integration test setuped.
+
+* __This is not necessary__. In testing we can use another db if we don't want to use our live:
+    * In terminal run: `cp .env.testing.example .env.testing`
+    * Update the db settings and copy APP_KEY from .env
+    * Create the db on your db
+    * Run: `php artisan migrate --env=testing`
+
+* To try it run: `php artisan test`
+
+# Arduino setup guide (IoT device)
+
+All Arduino related code can be found inside the Arduino folder.  
+All commands and info assumes that you've opened the Arduino folder.
+
+## Requirements:
+
+Board type: `Arduino MKR WiFi 1010`
+
+Libraries to install for arduino code to function:
+
+- Arduino_MKRIoTCarrier by Arduino
+- WiFiNINA by Arduino
+- NTPClient by Fabrice Weinberg
+- ArduinoHttpClient by Arduino
+- PubSubClient by Nick O'Leary
+- ArduinoJson by Benoit Blanchon
+
+## Before upload:
+
+1. Copy SECRETS.h.example to SECRETS.h: `cp SECRETS.h.example SECRETS.h` 
+2. Add your wifi info, if you're hosting the backend from a local pc, then the arduino should be on the same wifi.
+3. Add the ip of the backend to the server host variable.
+4. If the port of the backend is different from 8000, then update the server port variable as well.
+
+## After upload:
+
+The arduino should now begin to connect to the required services.  
+If it fails to connect to the mqtt host, then it will display it on the primary display of the device.
+
+To get the messages sent to the mqtt host into the database:
+
+1. Open a new terminal on the pc/server running the backend.
+2. Navigate in to the folder containing the backend code. `StoreDataCollection`
+3. Run the following artisan command: `php artisan rabbitmq:consume`
+
+This will start a process that will continue to listen for messages on the rabbitmq server.  
+To stop it from listening, simply stop the command.
