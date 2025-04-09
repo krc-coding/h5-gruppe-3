@@ -37,3 +37,12 @@ fixed bugs and looked at PR's on git.
 04/04
 added a security layer so the user wont accidently delete their groups or devices
 and made it so they cant dublicate devices in a group. (only frontend)
+
+07/04
+started up on writing a user guide.
+
+08/04
+finished writing the user guide.
+
+09/04
+made the user guide more readable.
