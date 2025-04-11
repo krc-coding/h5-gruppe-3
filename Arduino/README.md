@@ -1,6 +1,6 @@
 Libraries to install for arduino code to function:
 
-- Arduino_MKRIoTCarrier by Arduino
+- Arduino_MKRIoTCarrier by Riccardo Rizzo, Jose García, Pablo Marquínez
 - WiFiNINA by Arduino
 - NTPClient by Fabrice Weinberg
 - ArduinoHttpClient by Arduino
