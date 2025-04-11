@@ -39,5 +39,8 @@
  - Half sick
  - Code comments
 
-7-4-25 -> 9-4-25
+7-4-25 -> 10-4-25
  - Documentation
+
+11-4-25
+ - Setup arduino to exam
